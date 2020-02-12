@@ -31,6 +31,22 @@ window.ToDoList = {
         })
     },
 
+    updateTask: function(id, done) {
+        let requestBody = {
+            done: done
+        };
+        $.ajax({
+            url: ToDoList.API_BASE_URL + "?id=" + id,
+            method: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(requestBody)
+        }).done(function () {
+            ToDoList.updateTask();
+        })
+
+
+    },
+
 
     getTaskRow: function (task) {
         //spread operator ...
@@ -61,7 +77,19 @@ window.ToDoList = {
             event.preventDefault();
             ToDoList.createTasks();
 
-        })
+        });
+
+
+        //delegate is necessary here because the element.mark-done is not present in the page from the beginning, but injected later on
+        $("#tasks-table").delegate(".mark-done", "change", function (event) {
+            event.preventDefault();
+            //READING VALUEA OF ATTRIBUTES PREFIXED WITH DATA
+            let taskId = $(this).data("id");
+            let checked = $(this).is(":checked");
+
+            ToDoList.updateTask(taskId, checked);
+
+        });
     }
 
 };
