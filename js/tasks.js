@@ -8,9 +8,7 @@ window.ToDoList = {
             method: "GET"
         }).done(function (response) {
             console.log(response);
-
         })
-
     },
 
     getTaskRow: function (task) {
