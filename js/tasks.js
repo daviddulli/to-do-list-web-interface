@@ -41,10 +41,19 @@ window.ToDoList = {
             contentType: "application/json",
             data: JSON.stringify(requestBody)
         }).done(function () {
-            ToDoList.updateTask();
+            ToDoList.getTasks();
         })
 
 
+    },
+
+    deleteTasks: function (id) {
+        $.ajax({
+            url: ToDoList.API_BASE_URL + "?id=" + id,
+            method: "DELETE"
+        }).done(function () {
+            ToDoList.getTasks();
+        })
     },
 
 
@@ -89,6 +98,12 @@ window.ToDoList = {
 
             ToDoList.updateTask(taskId, checked);
 
+        });
+
+        $("#task-table").delegate(".delete-task", "click", function (event) {
+            event.preventDefault();
+            let taskId = $(this).data("id");
+            ToDoList.deleteTasks(taskId);
         });
     }
 
